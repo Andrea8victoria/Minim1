@@ -6,28 +6,53 @@ import edu.upc.dsa.models.PlanVuelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public interface DronesManager {
 
-
-    public Dron addDron(String nombre, String fabricante);
+    //DRON
+    public Dron addDron(String id, String nombre, String fabricante, String modelo, int NumHoras);
     public Dron addDron(Dron t);
-    public Dron getDrone(String id);
-    public List<Dron> findAll();
-    public void deleteDron(String id);
-    public Dron updateDron(Dron t);
-    //public List<Dron> dronsbyhoras();
+    public void addAlmacen (String id);
 
-    public Piloto addPiloto(String nombre, String apellidos);
+    public void deleteAlmacen();
+    public void deleteDron(String id);
+
+    public List<Dron> findAll();
+    public Stack<Dron> getAlmacen();
+    public Dron getDrone(String id);
+    public List<Dron> dronsbyhoras();
+
+    public Dron updateDron(Dron t);
+
+
+    //PILOTO
+    public Piloto addPiloto(String nombre, String apellidos, int NumHoras);
     public Piloto addPiloto(Piloto p);
+
     public Piloto getPiloto(String id);
     public ArrayList<Piloto> getListaPilotos();
+    public List<Piloto> pilotobyhoras();
+
     public void deletePiloto(String id);
+
     public Piloto updatePiloto(Piloto p);
-    //public List<Piloto> pilotobyhoras();
 
-    //public PlanVuelo addPlanVuelo(String idDron, String fecha, String tiempo, String origen, String destino, String piloto);
 
+    //PLAN VUELO
+    public PlanVuelo addPlanVuelo(String idDron, String fecha, String tiempo, String origen, String destino, String piloto);
+    public PlanVuelo addPlanVuelo(PlanVuelo planVuelo);
+
+    public ArrayList<PlanVuelo> getPlanesVuelos();
+
+
+    //OTROS
     public int size();
-    //public int numHoras(String b001);
+
+    public int sizePiloto();
+
+    public int sizePlanVuelo();
+
+    public int numHoras(String b001);
+
 }

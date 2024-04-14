@@ -25,15 +25,15 @@ public class PilotoService {
 
     public PilotoService() {
         this.tm = DronesManagerImpl.getInstance();
-        if (tm.size()==0) {
-            this.tm.addPiloto("La Barbacoa", "Georgie Dann");
-            this.tm.addPiloto("Despacito", "Luis Fonsi");
-            this.tm.addPiloto("Enter Sandman", "Metallica");
+        if (tm.sizePiloto()==0) {
+            this.tm.addPiloto("Paco", "Dann", 8);
+            this.tm.addPiloto("Carlos", "Fonsi",3);
+            this.tm.addPiloto("Juan", "Antonio",4);
         }
-
-
     }
 
+
+////GET
     @GET
     @ApiOperation(value = "get all Piloto", notes = "asdasd")
     @ApiResponses(value = {
@@ -64,6 +64,24 @@ public class PilotoService {
         else  return Response.status(201).entity(t).build();
     }
 
+    @GET
+    @ApiOperation(value = "get all Pilotos per flight hours", notes = "asdasd")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successful", response = Dron.class, responseContainer="List"),
+    })
+    @Path("/byhoras")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPilotosbyHoras() {
+
+        List<Piloto> pilotos = this.tm.pilotobyhoras();
+        GenericEntity<List<Piloto>> entity = new GenericEntity<List<Piloto>>(pilotos) {
+        };
+        return Response.status(201).entity(entity).build();
+
+    }
+
+
+////DELETE
     @DELETE
     @ApiOperation(value = "delete a Piloto", notes = "asdasd")
     @ApiResponses(value = {
@@ -78,6 +96,8 @@ public class PilotoService {
         return Response.status(201).build();
     }
 
+
+////PUT
     @PUT
     @ApiOperation(value = "update a Piloto", notes = "asdasd")
     @ApiResponses(value = {
@@ -95,7 +115,7 @@ public class PilotoService {
     }
 
 
-
+////POST
     @POST
     @ApiOperation(value = "create a new Piloto", notes = "asdasd")
     @ApiResponses(value = {

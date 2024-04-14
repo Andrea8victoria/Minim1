@@ -1,9 +1,11 @@
 package edu.upc.dsa.models;
 
 import edu.upc.dsa.util.RandomUtils;
+import org.yaml.snakeyaml.util.ArrayStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Dron {
 
@@ -12,29 +14,21 @@ public class Dron {
     String fabricante;
     String modelo;
     private int NumHoras;
-    List<Almacen> almacens;
+
     static int lastId;
 
-    public Dron(String id) {
-        almacens = new ArrayList<Almacen>();
-    }
-
-    public void addAlmacen(String id) {
-        almacens.add(new Almacen(id));
-    }
-
-    public Almacen getAlmacen(int i) {
-        return almacens.get(i);
-    }
-
+    //id aleatorio
     public Dron() {
         this.id = RandomUtils.getId();
     }
 
-    public Dron(String nombre, String fabricante) {
-        this();
+    //constructor
+    public Dron(String id, String nombre, String fabricante, String modelo, int numHoras) {
+        this.id = RandomUtils.getId();
         this.setNombre(nombre);
         this.setFabricante(fabricante);
+        this.setModelo(modelo);
+        this.setNumHoras(numHoras);
     }
 
     public String getId() {
@@ -70,13 +64,17 @@ public class Dron {
         this.modelo = modelo;
     }
 
+
     public int getNumHoras() {
+
         return NumHoras;
     }
 
     public void setNumHoras(int numHoras) {
         NumHoras = numHoras;
     }
+
+
 
     @Override
     public String toString() {

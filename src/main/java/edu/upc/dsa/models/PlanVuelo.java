@@ -1,5 +1,11 @@
 package edu.upc.dsa.models;
 
+import edu.upc.dsa.util.RandomUtils;
+import org.yaml.snakeyaml.util.ArrayStack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 public class PlanVuelo {
     String idDron;
     String fecha;
@@ -7,6 +13,8 @@ public class PlanVuelo {
     String origen;
     String destino;
     String piloto;
+
+    //constructor
     public PlanVuelo(String idDron, String fecha, String tiempo, String origen, String destino, String piloto) {
         this.setIdDron(idDron);
         this.setFecha(fecha);
@@ -64,5 +72,8 @@ public class PlanVuelo {
         this.piloto = piloto;
     }
 
-
+    @Override
+    public String toString() {
+        return "PlanVuelo [idDron="+idDron+", fecha=" + fecha + ", tiempo=" + tiempo +", origen=" + origen +", destino=" + destino +", piloto=" + piloto +"]";
+    }
 }

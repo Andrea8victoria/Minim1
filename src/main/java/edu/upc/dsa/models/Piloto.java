@@ -7,25 +7,19 @@ public class Piloto {
     String nombre;
     String apellidos;
     private int NumHoras;
-
-    public int getNumHoras() {
-        return NumHoras;
-    }
-
-    public void setNumHoras(int numHoras) {
-        NumHoras = numHoras;
-    }
-
     static int lastId;
 
+    //id aleatorio
     public Piloto() {
         this.id = RandomUtils.getId();
     }
 
-    public Piloto(String nombre, String apellidos) {
+    //constructor
+    public Piloto(String nombre, String apellidos, int numHoras) {
         this();
         this.setApellidos(apellidos);
         this.setNombre(nombre);
+        this.setNumHoras(numHoras);
     }
 
     public String getId() {
@@ -35,7 +29,6 @@ public class Piloto {
     public void setId(String id) {
         this.id=id;
     }
-
 
     public String getNombre() {
         return nombre;
@@ -51,6 +44,14 @@ public class Piloto {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+
+    public int getNumHoras() {
+        return NumHoras;
+    }
+
+    public void setNumHoras(int numHoras) {
+        NumHoras = numHoras;
     }
 
     @Override

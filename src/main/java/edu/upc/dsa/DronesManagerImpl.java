@@ -2,9 +2,7 @@ package edu.upc.dsa;
 
 import edu.upc.dsa.models.Dron;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import edu.upc.dsa.models.Piloto;
 import edu.upc.dsa.models.PlanVuelo;
@@ -15,24 +13,30 @@ public class DronesManagerImpl implements DronesManager {
     protected List<Dron> drons;
     private ArrayList<Piloto> listaPilotos;
     private ArrayList<PlanVuelo> planesVuelos;
+    private Stack<Dron> almacens;
     final static Logger logger = Logger.getLogger(DronesManagerImpl.class);
 
     public DronesManagerImpl(){
         listaPilotos=new ArrayList<>();
         planesVuelos=new ArrayList<>();
         this.drons = new LinkedList<>();
+        this.almacens=new Stack<>();
     }
 
+    public int sizePlanVuelo() {
+        int ret = this.planesVuelos.size();
+        logger.info("sizePlanVuelo " + ret);
 
-    public static DronesManager getInstance() {
-        if (instance==null) instance = new DronesManagerImpl();
-        return instance;
+        return ret;
     }
 
+    public int sizePiloto() {
+        int ret = this.listaPilotos.size();
+        logger.info("sizePiloto " + ret);
 
-    public ArrayList<Piloto> getListaPilotos() {
-        return listaPilotos;
+        return ret;
     }
+
     public int size() {
         int ret = this.drons.size();
         logger.info("size " + ret);
@@ -40,32 +44,30 @@ public class DronesManagerImpl implements DronesManager {
         return ret;
     }
 
-    public Piloto addPiloto(Piloto p) {
-        logger.info("new Piloto " + p);
-
-        this.listaPilotos.add (p);
-        logger.info("new Dron added");
-        return p;
-    }
-    public Dron addDron(Dron t) {
-        logger.info("new Dron " + t);
-
-        this.drons.add (t);
-        logger.info("new Dron added");
-        return t;
+    @Override
+    public int numHoras(String b001) {
+        return 0;
     }
 
-    /*
-    public PlanVuelo addPlanVuelo(String idDron, String fecha, String tiempo, String origen, String destino, String piloto) {
-        return this.addPlanVuelo(new PlanVuelo(idDron, fecha, tiempo, origen, destino, piloto));
+
+
+
+////GET
+    public static DronesManager getInstance() {
+        if (instance==null) instance = new DronesManagerImpl();
+        return instance;
     }
 
-     */
-    public Piloto addPiloto(String nombre, String apellidos) {
-        return this.addPiloto(new Piloto(nombre, apellidos));
+    public Stack<Dron> getAlmacen() {return this.almacens;}
+
+    public ArrayList<Piloto> getListaPilotos() {
+        return listaPilotos;
     }
-    public Dron addDron(String nombre, String fabricante) {
-        return this.addDron(new Dron(nombre, fabricante));
+
+    public ArrayList<PlanVuelo> getPlanesVuelos() { return planesVuelos;}
+
+    public List<Dron> findAll() {
+        return this.drons;
     }
 
     public Piloto getPiloto(String id) {
@@ -98,10 +100,90 @@ public class DronesManagerImpl implements DronesManager {
         return null;
     }
 
-    public List<Dron> findAll() {
-        return this.drons;
+    @Override
+    public List<Dron> dronsbyhoras() {
+        List<Dron> desclist = new ArrayList<>(this.drons);
+
+        if (!desclist.isEmpty()) {
+            Collections.sort(desclist, new Comparator<Dron>() {
+                @Override
+                public int compare(Dron o1, Dron o2) {
+                    return Integer.compare(o2.getNumHoras(), o1.getNumHoras());
+                }
+            });
+            return desclist;
+        }else return  null;
     }
 
+    @Override
+    public List<Piloto> pilotobyhoras() {
+        List<Piloto> desclist = new ArrayList<>(this.listaPilotos);
+
+        if (!desclist.isEmpty()) {
+            Collections.sort(desclist, new Comparator<Piloto>() {
+                @Override
+                public int compare(Piloto o1, Piloto o2) {
+                    return Integer.compare(o2.getNumHoras(), o1.getNumHoras());
+                }
+            });
+            return desclist;
+        }else return  null;
+    }
+
+
+
+////ADD
+    public Piloto addPiloto(String nombre, String apellidos, int numHoras) {
+        return this.addPiloto(new Piloto(nombre, apellidos, numHoras));
+    }
+
+    public Dron addDron(String id,String nombre, String fabricante, String modelo, int numHoras) {
+        return this.addDron(new Dron(id, nombre, fabricante, modelo, numHoras));
+    }
+
+    public PlanVuelo addPlanVuelo(String idDron, String fecha, String tiempo, String origen, String destino, String piloto) {
+        return this.addPlanVuelo(new PlanVuelo(idDron, fecha, tiempo, origen, destino, piloto));
+    }
+
+    public PlanVuelo addPlanVuelo(PlanVuelo planVuelo) {
+        logger.info("new PlanVuelo " + planVuelo);
+
+        this.planesVuelos.add (planVuelo);
+        logger.info("new PlanVuelo added");
+        return planVuelo;
+    }
+
+    public Piloto addPiloto(Piloto p) {
+        logger.info("new Piloto " + p);
+
+        this.listaPilotos.add (p);
+        logger.info("new Piloto added");
+        return p;
+    }
+
+    public Dron addDron(Dron t) {
+        logger.info("new Dron " + t);
+
+        this.drons.add (t);
+        logger.info("new Dron added");
+        return t;
+    }
+
+    @Override
+    public void addAlmacen(String id) {
+        Dron t = this.getDrone(id);
+        if (t==null) {
+            logger.warn("not found " + t);
+        }
+        else logger.info(t+" saved ");
+
+        this.almacens.add(t);
+    }
+
+
+
+
+////DELETE
     @Override
     public void deletePiloto(String id) {
 
@@ -128,6 +210,12 @@ public class DronesManagerImpl implements DronesManager {
 
     }
 
+    @Override
+    public void deleteAlmacen() {this.almacens.pop();}
+
+
+
+////UPDATE
     @Override
     public Piloto updatePiloto(Piloto t) {
         Piloto p = this.getPiloto(t.getId());
@@ -166,30 +254,5 @@ public class DronesManagerImpl implements DronesManager {
 
         return t;
     }
-    /*
-    @Override
-    public List<Dron> dronsbyhoras() {
-        List<Dron> list = this.drons;
-        list.sort((Dron p1, Dron p2) -> Double.compare(p1.getNumHoras(), p2.getNumHoras()));
-        return list;
-    }
-    @Override
-    public int numHoras(String idDrons) {
-        int NumHorasActual = 0;
-        boolean encontrado = false;
-        int j = 0;
-        while ((!encontrado) && (j < drons.size())) {
-            if (drons.get(j).getId() == idDrons) {
-                encontrado = true;
-            } else {
-                j++;
-            }
-        }
-        if (encontrado) {
-            NumHorasActual = drons.get(j).getNumHoras();
-        }
-        return NumHorasActual;
-    }
 
-     */
 }
