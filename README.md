@@ -14,12 +14,13 @@ Operaciones:
 - Listado de Planes de Vuelo Asignados a un Dron: Visualiza los planes de vuelo asignados a un dron en particular.
 
 Implementación y Estructura del Código
-Parte I:
+
+  Parte I:
 - Identificar las entidades de información y sus propiedades.
 - Interfaz Java: Define métodos para cada operación descrita anteriormente.
 - Fachada (Patrón de Diseño Singleton): Incluye trazas de log utilizando Log4J para registrar parámetros y eventos clave.
 - Test (JUNIT): Implementa pruebas unitarias para verificar el correcto funcionamiento de las operaciones de la fachada.
 
-Parte II
+  Parte II
 - Definición del Servicio REST: Define rutas y operaciones, utiliza DTOs (Objetos de Transferencia de Datos) y retorna respuestas con códigos de estado adecuados para cada operación.
 - Implementación del Servicio REST: Construye un servicio REST utilizando el componente Java desarrollado anteriormente, asegura que todas las operaciones sean accesibles a través de endpoints RESTful y maneja correctamente la comunicación cliente-servidor utilizando Retrofit.
